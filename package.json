@@ -1,0 +1,30 @@
+{
+  "name": "devdocsjs",
+  "version": "1.0.0",
+  "description": "a simple package to interact with the (unofficial) devdocs API",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --ignore ./devdocs ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Claudi0-V/DevDocsJS.git"
+  },
+  "keywords": [
+    "devdocs"
+  ],
+  "author": "Cláudio Jesus",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Claudi0-V/DevDocsJS/issues"
+  },
+  "homepage": "https://github.com/Claudi0-V/DevDocsJS#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  },
+  "dependencies": {
+    "node-fetch": "^3.2.10"
+  }
+}
