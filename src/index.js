@@ -2,6 +2,7 @@ import fetch from "node-fetch";
 import { access, mkdir, writeFile } from "node:fs/promises";
 import Path from "node:path";
 import * as url from "url";
+import { html2Object } from "html2object";
 
 async function exists(path) {
 	try {
@@ -30,4 +31,9 @@ async function getDoc(path) {
 		console.log(err);
 		return null;
 	}
+}
+
+async function convertHTMLToJson(str) {
+	const obj = await html2Object(str);
+	return JSON.stringify(obj);
 }
