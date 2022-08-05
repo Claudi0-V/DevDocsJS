@@ -2,11 +2,11 @@
   "name": "devdocsjs",
   "version": "0.0.1",
   "description": "a simple package to interact with the (unofficial) devdocs API",
-  "main": "index.js",
+  "main": "core.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --ignore ./devdocs ./src/index.js"
+    "dev": "nodemon --ignore ./devdocs ./src/core.js"
   },
   "repository": {
     "type": "git",
