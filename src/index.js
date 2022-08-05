@@ -1,8 +1,7 @@
 import fetch from "node-fetch";
 import { access, mkdir, writeFile, readFile } from "node:fs/promises";
-import Path from "node:path";
-import * as url from "url";
 import { html2Object } from "html2object";
+import fuzzysort from "fuzzysort";
 
 const docsURL = "https://documents.devdocs.io";
 // ########################### basic functions #################################### //
@@ -60,7 +59,7 @@ async function getDocFromSlug(slug, file, defaultURL = docsURL) {
 async function slugDocList(arr, defaultURL = docsURL) {
 	const slugJsonArr = [];
 	for (let slug of arr) {
-		const content = await fetchDoc(`${defaultURL}/${slug}/db.json`);
+		const content = await fetchDoc(`${defaultURL}/${slug}/index.json`);
 		slugJsonArr.push({ name: slug, content });
 	}
 	return slugJsonArr;
@@ -68,10 +67,9 @@ async function slugDocList(arr, defaultURL = docsURL) {
 
 //getDocFromSlug("angular", "api/animations/animationmetadata");
 //const d = await getMainDoc();
-
 // ######################  node   ######################################### //
 
-const getFileConvertAndSave = async (slug, filename) => {
+async function getFileConvertAndSave(slug, filename) {
 	const doc = await getDocFromSlug("react", "hooks-reference");
 	const converted = convertHTMLToJson(doc);
 	await saveFetchedToFile(
@@ -79,15 +77,34 @@ const getFileConvertAndSave = async (slug, filename) => {
 		"hooks-reference.json",
 		converted
 	);
-};
+}
 
-const getSlugsAndSave = async (arr, path = "./devdocs") => {
+async function getSlugsAndSave(arr, path = "./devdocs") {
 	const slugs = await slugDocList(arr);
 	for (let { name, content } of slugs) {
-		await saveFetchedToFile(`${path}/${name}`, "db.json", content);
+		await saveFetchedToFile(`${path}/${name}`, "index.json", content);
 	}
-};
+}
 
-// await getSlugsAndSave(["react", "Angular"]);
+//await getSlugsAndSave(["react"]);
 // ######################### read and search ###################################### //
-// JSON.parse(config) readFile
+function search(content, entries, rules) {
+	const results = fuzzysort.go(content, entries, rules);
+	return results;
+}
+
+async function searchFromFile(
+	slug,
+	content,
+	rules = { limit: 15, key: "name" },
+	searchFunc = search
+) {
+	const doc = await readFile(`./devdocs/${slug}/index.json`, "utf8");
+	const { entries } = JSON.parse(doc);
+	return searchFunc(content, entries, rules);
+}
+
+//const a = await searchFromFile("react", "useC");
+//console.log(a);
+//const b = await searchFromFile("react", "memo");
+//console.log(b);
