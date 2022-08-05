@@ -1,4 +1,5 @@
 import { access, mkdir, writeFile, readFile } from "node:fs/promises";
+import { getDocFromSlug, convertHTMLToJson, slugDocList } from "./core.js";
 
 export async function exists(path) {
 	try {
